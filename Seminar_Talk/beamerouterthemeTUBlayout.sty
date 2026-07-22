@@ -1,0 +1,235 @@
+% Copyright 2015 by Tony Ballhause
+%
+% This file may be distributed and/or modified under the
+% LaTeX Project Public License. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+% This work consists of the files beamerthemeTUBlayout.sty
+% beamerinnerthemeTUBlayout.sty and beamerouterthemeTUBlayout.sty
+
+\ProvidesPackage{beamerouterthemeTUBlayout}[2015/11/04 TUB-Layout for beamer]
+
+\RequirePackage{textpos}
+\RequirePackage{calc}
+\RequirePackage{transparent}
+
+\mode<presentation>
+
+\defbeamertemplate*{title page}{customized}[1][]{} %create empty title page
+\newcommand{\pipe}{\hspace{2pt}\textbar\hspace{2pt}}
+
+%% Check for aspectratio and make titlepage
+%++++++++ aspect ratio 16:10 ++++++++%
+\ifdim\beamer@paperwidth=16.00cm\relax%
+  \ifdim\beamer@paperheight=10.00cm\relax%
+  \addtobeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay] % logo and title image
+    \node [xshift=-28.35mm,yshift=-15.04mm] (tublogo) at (current page.north east)
+    {\includegraphics[width=55mm]{logos/TU_BERLIN_Logo_lang_RGB_SR_rot.pdf}};
+  \end{tikzpicture}%
+  \begin{tikzpicture}[remember picture,overlay] % title image
+    \input{titleimg.tikz}
+  \end{tikzpicture}%
+  \begin{tikzpicture}[remember picture,overlay] % gradient banner
+    \node[text width=\paperwidth] at (current page.south)
+    {
+      \begin{pgfpicture}
+        \pgfpathmoveto{\pgfpointorigin}
+        \pgfpathlineto{\pgfpoint{0}{5.8cm}}
+        \pgfpathlineto{\pgfpoint{\paperwidth}{5.8cm+0.035\paperwidth}}
+        \pgfpathlineto{\pgfpoint{\paperwidth}{0}}
+            \pgfusepath{clip}
+            \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+        \end{pgfpicture}
+        };
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember picture,overlay] % title
+    \node[anchor=north west,xshift=2em,text width=0.8\paperwidth] at (current page.west) {
+        \centering\usebeamerfont{title}{\color{title}\inserttitle}
+    };
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember picture,overlay] % author block
+    \node[anchor=south west,xshift=2em,yshift=10mm] at (current page.south west) {
+      \begin{beamercolorbox}{footline}
+        \scriptsize\color{white}\insertauthor \\[2mm] \insertinstitute \\ \preslocation \pipe \insertdate
+      \end{beamercolorbox}
+    };
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember picture,overlay] % collaboration logos
+    \input{logos.tikz}
+  \end{tikzpicture}
+}{}
+%%% headline
+\defbeamertemplate*{headline}{TUBlayout}
+{%
+\begin{beamercolorbox}[ht=4ex,sep=2pt]{headline}
+    \leavevmode
+    \hbox to 1.5cm{
+      \insertsectionnavigationhorizontal{\paperwidth}{\hskip3pt}{\hfill}
+    }
+    \begin{tikzpicture}[remember picture, overlay] % logo
+      \node [xshift=-17mm,yshift=-17mm] at (current page.north east)
+      {{\transparent{0.05}\includegraphics[width=40mm]{logos/TU_BERLIN_Logo_kurz_RGB_SR_rot.pdf}}};
+    \end{tikzpicture}%
+  \end{beamercolorbox}%
+}
+%%% footline
+\defbeamertemplate*{footline}{TUBlayout}
+{%
+  \begin{tikzpicture}[overlay]
+    \node[anchor=south,yshift=-3pt] at (current page.south) {
+      \begin{pgfpicture}
+        \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\paperwidth}{10pt}}
+        \pgfusepath{clip}
+        \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+      \end{pgfpicture}
+    };
+    \node[anchor=south,text width=0.98\paperwidth] at (current page.south) {
+      \insertshortauthor \pipe \insertshortinstitute \pipe {\textit\insertshorttitle} \hfill \insertframenumber \hspace{1em}
+    };
+  \end{tikzpicture}
+}
+  \fi
+%++++++++ aspect ratio 16:9 ++++++++%
+  \ifdim\beamer@paperheight=9.00cm\relax%
+    \addtobeamertemplate{title page}{%
+      \begin{tikzpicture}[remember picture,overlay] % logo and title image
+        \node [xshift=-28.35mm,yshift=-15.04mm] (tublogo) at (current page.north east)
+        {\includegraphics[width=55mm]{logos/TU_BERLIN_Logo_lang_RGB_SR_rot.pdf}};
+      \end{tikzpicture}%
+      \begin{tikzpicture}[remember picture,overlay] % title image
+        \input{titleimg.tikz}
+      \end{tikzpicture}%
+      \begin{tikzpicture}[remember picture,overlay] % gradient banner
+        \node[text width=\paperwidth] at (current page.south)
+        {
+          \begin{pgfpicture}
+            \pgfpathmoveto{\pgfpointorigin}
+            \pgfpathlineto{\pgfpoint{0}{5.8cm}}
+            \pgfpathlineto{\pgfpoint{\paperwidth}{5.8cm+0.035\paperwidth}}
+            \pgfpathlineto{\pgfpoint{\paperwidth}{0}}
+                \pgfusepath{clip}
+                \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+            \end{pgfpicture}
+            };
+      \end{tikzpicture}
+      \begin{tikzpicture}[remember picture,overlay] % title
+        \node[anchor=north west,xshift=2em,text width=0.8\paperwidth] at (current page.west) {
+            \centering\usebeamerfont{title}{\color{title}\inserttitle}
+        };
+      \end{tikzpicture}
+      \begin{tikzpicture}[remember picture,overlay] % author block
+        \node[anchor=south west,xshift=2em,yshift=10mm] at (current page.south west) {
+          \begin{beamercolorbox}{footline}
+            \scriptsize\color{white}\insertauthor \\[2mm] \insertinstitute \\ \preslocation \pipe \insertdate
+          \end{beamercolorbox}
+        };
+      \end{tikzpicture}
+      \begin{tikzpicture}[remember picture,overlay] % collaboration logos
+        \input{logos.tikz}
+      \end{tikzpicture}
+    }{}
+    %%% headline
+    \defbeamertemplate*{headline}{TUBlayout}
+    {%
+    \begin{beamercolorbox}[ht=4ex,sep=2pt]{headline}
+        \leavevmode
+        \hbox to 1.5cm{
+          \insertsectionnavigationhorizontal{\paperwidth}{\hskip3pt}{\hfill}
+        }
+        \begin{tikzpicture}[remember picture, overlay] % logo
+          \node [xshift=-15mm,yshift=-15mm] at (current page.north east)
+          {{\transparent{0.05}\includegraphics[width=40mm]{logos/TU_BERLIN_Logo_kurz_RGB_SR_rot.pdf}}};
+        \end{tikzpicture}%
+      \end{beamercolorbox}%
+    }
+    %%% footline
+    \defbeamertemplate*{footline}{TUBlayout}
+    {%
+      \begin{tikzpicture}[overlay]
+        \node[anchor=south,yshift=-3pt] at (current page.south) {
+          \begin{pgfpicture}
+            \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\paperwidth}{10pt}}
+            \pgfusepath{clip}
+            \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+          \end{pgfpicture}
+        };
+        \node[anchor=south,text width=0.98\paperwidth] at (current page.south) {
+          \insertshortauthor \pipe \insertshortinstitute \pipe {\textit\insertshorttitle} \hfill \insertframenumber \hspace{1em}
+        };
+      \end{tikzpicture}
+    }
+  \fi
+\fi
+%++++++++ aspect ratio 4:3 ++++++++%
+\ifdim\beamer@paperwidth=12.80cm\relax%
+\addtobeamertemplate{title page}{%
+\begin{tikzpicture}[remember picture,overlay] % logo and title image
+  \node [xshift=-28.35mm,yshift=-15.04mm] (tublogo) at (current page.north east)
+  {\includegraphics[width=55mm]{logos/TU_BERLIN_Logo_lang_RGB_SR_rot.pdf}};
+\end{tikzpicture}%
+\begin{tikzpicture}[remember picture,overlay] % title image
+  \input{titleimg.tikz}
+\end{tikzpicture}%
+\begin{tikzpicture}[remember picture,overlay] % gradient banner
+  \node[text width=\paperwidth] at (current page.south)
+  {
+    \begin{pgfpicture}
+      \pgfpathmoveto{\pgfpointorigin}
+      \pgfpathlineto{\pgfpoint{0}{5.8cm}}
+      \pgfpathlineto{\pgfpoint{\paperwidth}{5.8cm+0.035\paperwidth}}
+      \pgfpathlineto{\pgfpoint{\paperwidth}{0}}
+          \pgfusepath{clip}
+          \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+      \end{pgfpicture}
+      };
+\end{tikzpicture}
+\begin{tikzpicture}[remember picture,overlay] % title
+  \node[anchor=north west,xshift=2em,text width=0.8\paperwidth] at (current page.west) {
+      \centering\usebeamerfont{title}{\color{title}\inserttitle}
+  };
+\end{tikzpicture}
+\begin{tikzpicture}[remember picture,overlay] % author block
+  \node[anchor=south west,xshift=2em,yshift=10mm] at (current page.south west) {
+    \begin{beamercolorbox}{footline}
+      \scriptsize\color{white}\insertauthor \\[2mm] \insertinstitute \\ \preslocation \pipe \insertdate
+    \end{beamercolorbox}
+  };
+\end{tikzpicture}
+\begin{tikzpicture}[remember picture,overlay] % collaboration logos
+  \input{logos.tikz}
+\end{tikzpicture}
+}{}
+%%% headline
+\defbeamertemplate*{headline}{TUBlayout}
+{%
+\begin{beamercolorbox}[ht=4ex,sep=2pt]{headline}
+  \leavevmode
+  \hbox to 1.5cm{
+    \insertsectionnavigationhorizontal{\paperwidth}{\hskip3pt}{\hfill}
+  }
+  \begin{tikzpicture}[remember picture, overlay] % logo
+    \node [xshift=-20mm,yshift=-20mm] at (current page.north east)
+    {{\transparent{0.05}\includegraphics[width=40mm]{logos/TU_BERLIN_Logo_kurz_RGB_SR_rot.pdf}}};
+  \end{tikzpicture}%
+\end{beamercolorbox}%
+}
+%%% footline
+\defbeamertemplate*{footline}{TUBlayout}
+{%
+\begin{tikzpicture}[overlay]
+  \node[anchor=south,yshift=-3pt] at (current page.south) {
+    \begin{pgfpicture}
+      \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\paperwidth}{10pt}}
+      \pgfusepath{clip}
+      \pgftext[left,base]{\pgfuseshading{TUshading}{45}}
+    \end{pgfpicture}
+  };
+  \node[anchor=south,text width=0.98\paperwidth] at (current page.south) {
+    \insertshortauthor \pipe \insertshortinstitute \pipe {\textit\insertshorttitle} \hfill \insertframenumber \hspace{1em}
+  };
+\end{tikzpicture}
+}
+\fi
+\mode
+<all>
