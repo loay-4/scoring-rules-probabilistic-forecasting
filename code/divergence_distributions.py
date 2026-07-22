@@ -14,9 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-plt.rcParams["text.usetex"] = shutil.which("latex") is not None
-
-FIGURES_DIR = Path(__file__).parent / "figures"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = SCRIPT_DIR / "figures"
 
 DISTRIBUTIONS = [
     {"label": "Hilbert", "mean": 5, "std": 1, "color": "green"},
@@ -26,6 +25,8 @@ DISTRIBUTIONS = [
 
 
 def main(save: bool = True) -> None:
+    # Render labels with real LaTeX when available, mathtext otherwise.
+    plt.rcParams["text.usetex"] = shutil.which("latex") is not None
     x = np.linspace(0, 40, 2000)
 
     plt.figure(figsize=(10, 6))

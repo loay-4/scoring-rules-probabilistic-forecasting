@@ -146,9 +146,10 @@
 	        
 	   % Logo right corner - change to black-white if needed
        \begin{textblock*}{2mm}(17cm,4cm)
-       %\includegraphics[width=50mm]{def/TU_Logo_lang_RGB_rot.pdf}
+       % Use the PDF logo: the SVG variant requires Inkscape at build time.
+       \includegraphics[width=50mm]{def/TU_Logo_lang_RGB_rot.pdf}
        %\includegraphics[width=50mm]{def/TU_Logo_lang_RGB_schwarz.pdf}
-       \includesvg[width=40mm]{def/tu-berlin-logo-long-red.svg}
+       %\includesvg[width=40mm]{def/tu-berlin-logo-long-red.svg}
        \end{textblock*}
 
             

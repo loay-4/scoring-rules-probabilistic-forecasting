@@ -17,10 +17,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-# Render labels with real LaTeX when available, fall back to mathtext otherwise.
-plt.rcParams["text.usetex"] = shutil.which("latex") is not None
-
-FIGURES_DIR = Path(__file__).parent / "figures"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = SCRIPT_DIR / "figures"
 
 # The cast of forecasters. The "true" distribution is what nature actually
 # draws the temperature from; nobody observes it directly.
@@ -42,6 +40,8 @@ STAGES = {
 
 def plot_stage(stage: int, labels: list[str], save: bool = True) -> None:
     """Plot the forecast densities for one build-up stage of the intro slides."""
+    # Render labels with real LaTeX when available, mathtext otherwise.
+    plt.rcParams["text.usetex"] = shutil.which("latex") is not None
     x = np.linspace(0, 40, 2000)
 
     plt.figure(figsize=(10, 6))
@@ -84,6 +84,11 @@ def plot_stage(stage: int, labels: list[str], save: bool = True) -> None:
     plt.close()
 
 
-if __name__ == "__main__":
+def main(save: bool = True) -> None:
+    """Generate all build-up stages of the intro figure."""
     for stage, labels in STAGES.items():
-        plot_stage(stage, labels)
+        plot_stage(stage, labels, save=save)
+
+
+if __name__ == "__main__":
+    main()

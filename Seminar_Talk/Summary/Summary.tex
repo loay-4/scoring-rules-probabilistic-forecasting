@@ -9,6 +9,9 @@
 \usepackage{bbm}
 \usepackage{placeins}
 
+% Figures live in the talk's image folder one level up
+\graphicspath{{../}{./}}
+
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -72,17 +75,17 @@
 \newpage
 
 \chapter{Introduction}
-In our talk we looked at so called Scoring Rules for Probabilistic Forecasting as means of assigning a score to a prediction, made by some sort of machine learning algorithm. These predictions are usually given in a probabilistic setting, i.e. not as deterministic values, but rather as a cumulative distribution function or as a density function. A Scoring Rule then assigns a numerical value to a prediction, based on the predicted density, distribution, etc. and the real value that is observed. In the talk, we discussed the different settings in which Scoring Rules can be defined and used. Starting the talk, we gave the intuition behind Scoring Rules before introducing the rigorous mathematical definition. Overall, the talk was close in structure to the paper \cite{Gneiting} by first introducing categorical scores, giving examples like the Brier Score, Logarithmic Score and Zero-One-Score. For the chapter on continuous scores the focus mainly lies on the Logaritmic Score and Continuous Ranked Probability Score (CRPS), giving examples of when these might be useful. Further, we also discussed Kernel Scores as a way to quickly recover Scoring Rules via negative definite kernels and Scoring Rules for quantiles, in which case there no longer is some sort of predictive distribution function, but rather certain sections of the underlying distribution are predicted.
+In our talk we looked at so-called Scoring Rules for Probabilistic Forecasting as a means of assigning a score to a prediction made by some sort of machine learning algorithm. These predictions are usually given in a probabilistic setting, i.e. not as deterministic values, but rather as a cumulative distribution function or as a density function. A Scoring Rule then assigns a numerical value to a prediction, based on the predicted density, distribution, etc. and the real value that is observed. In the talk, we discussed the different settings in which Scoring Rules can be defined and used. Starting the talk, we gave the intuition behind Scoring Rules before introducing the rigorous mathematical definition. Overall, the talk was close in structure to the paper \cite{Gneiting} by first introducing categorical scores, giving examples like the Brier Score, Logarithmic Score and Zero-One-Score. For the chapter on continuous scores the focus mainly lies on the Logarithmic Score and the Continuous Ranked Probability Score (CRPS), giving examples of when these might be useful. Further, we also discussed Kernel Scores as a way to quickly recover Scoring Rules via negative definite kernels and Scoring Rules for quantiles, in which case there no longer is some sort of predictive distribution function, but rather certain sections of the underlying distribution are predicted.
 
 \newpage
 \chapter{Scoring rules for continuous forecasts}
-A predictive distribution in a continuous setting can be given in the form of a predictive density or a predictive cumulative distribution function (CDF), which gives a motivation to look at scoring rules for both ways of giving a forecast in this setting. This chapter is closely related to the according chapter in \cite{Gneiting}, adding some examples to illustrate the practical use of certain scoring rules  
+A predictive distribution in a continuous setting can be given in the form of a predictive density or a predictive cumulative distribution function (CDF), which gives a motivation to look at scoring rules for both ways of giving a forecast in this setting. This chapter is closely related to the corresponding chapter in \cite{Gneiting}, adding some examples to illustrate the practical use of certain scoring rules.
 \section{Scoring rules for predictive densities}
-Let $\mu$ be a $\sigma$-finite measure on some measurable space $(\Omega,\mathcal A)$. Let $\mathcal L_\alpha, \alpha>1$ be the set of probability measures $P$ on $(\Omega,\mathcal A)$, which are absolutely continuous with respect to $\mu$, such that the $\mu$-density $P$ of $p$ satisfies the following condition: \begin{align*}
+Let $\mu$ be a $\sigma$-finite measure on some measurable space $(\Omega,\mathcal A)$. Let $\mathcal L_\alpha, \alpha>1$ be the set of probability measures $P$ on $(\Omega,\mathcal A)$, which are absolutely continuous with respect to $\mu$, such that the $\mu$-density $p$ of $P$ satisfies the following condition: \begin{align*}
     \lVert p\rVert_\alpha = \left(\int p(\omega)^\alpha \mu(d\omega)\right)^\frac{1}{\alpha}<\infty.
 \end{align*}
 \begin{remark}
-    The $\mu$-density of a probaility measure is not uniquely defined, however in \cite{Gneiting} a way to uniquely determine a certain $p$ for some $P$ in $\mathcal{L}_\alpha$, when needed, is referenced
+    The $\mu$-density of a probability measure is not uniquely defined; however, \cite{Gneiting} references a way to uniquely determine a certain $p$ for some $P$ in $\mathcal{L}_\alpha$ when needed.
 \end{remark}
 Given this, scoring rules can be defined on the sets $\mathcal L_\alpha$ for certain values of $\alpha$.
 \begin{definition}[quadratic score]
@@ -102,32 +105,32 @@ A more general scoring rule, which is not restricted to a single value of $\alph
 The pseudospherical score is given by \begin{align*}
     \text{PseudoS}(p,\omega)=\frac{p(\omega)^{\alpha-1}}{\lVert p\rVert_\alpha^{\alpha-1}}
 \end{align*}
-and is strictly proper relative to the class $\mathcal L_\alpha$
+and is strictly proper relative to the class $\mathcal L_\alpha$.
 \end{definition}
 \subsection{Using the logarithmic score}
-Because of its simplicity, the logarithmic score is widely used in various different settings. A particular and also possibly problematic use case of the logarithmic score was described in \cite{Candela} and \cite{Kohonen}. In this particular case, a variation of the logarithmic score was used in a so called PASCAL challenge to score predictions given by an algorithm in the form of a density function. In this challenge, the predictive density was used to estimate the relation between two variables. Utilizing the logarithmic score in this scenario, however, came with a problem. If it was reasonable to expect some point on the continuous space of possible outputs for the given input to have a point mass (a probability greater than $0$), one could pick a small interval aroud this value and set the density on this interval as shown in Fig. 2.1. Since the logarithmic score only depends on the value at the observed point $\omega$, hitting the interval with almost arbitrary high density would result in a really high score even if one takes the average over multiple observations.    
+Because of its simplicity, the logarithmic score is widely used in various different settings. A particular and also possibly problematic use case of the logarithmic score was described in \cite{Candela} and \cite{Kohonen}. In this particular case, a variation of the logarithmic score was used in a so called PASCAL challenge to score predictions given by an algorithm in the form of a density function. In this challenge, the predictive density was used to estimate the relation between two variables. Utilizing the logarithmic score in this scenario, however, came with a problem. If it was reasonable to expect some point on the continuous space of possible outputs for the given input to have a point mass (a probability greater than $0$), one could pick a small interval around this value and set the density on this interval as shown in Fig. 2.1. Since the logarithmic score only depends on the value at the observed point $\omega$, hitting the interval with an almost arbitrarily high density would result in a very high score, even when averaging over multiple observations.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{images/Graphic Kohonen Suomela.png}
-    \caption{Figure 8 of \cite{Kohonen} shows how small intervals can have really high densities without altering the according CDF very much}
+    \caption{Figure 8 of \cite{Kohonen} shows how small intervals can have very high densities without altering the corresponding CDF very much}
     \end{figure}
 \section{Scoring rules for CDF}
-As seen in the previous chapter, only relying on predictive densities could be a problem, like in the example of the PASCAL challenge. Problems like this could be prevented if CFD's were used instead of predictive densities. Besides that using a CFD would also allow one to use discrete measures on sample sets to easier represent the predictive distribution as shown in Fig 2.2. Using the logarithmic score with the same representation would result in a "infinit penalty" if a value outside the sample materializes.
+As seen in the previous chapter, relying only on predictive densities can be a problem, as in the example of the PASCAL challenge. Problems like this could be prevented if CDFs were used instead of predictive densities. Besides that, using a CDF would also allow one to use discrete measures on sample sets to represent the predictive distribution more easily, as shown in Fig 2.2. Using the logarithmic score with the same representation would result in an "infinite penalty" if a value outside the sample materializes.
 \begin{figure}[!h]
             \centering
             \includegraphics[width=0.5\linewidth]{images/Kohonen Suomela Fig.9.png}
             \caption{ Figure 9 of \cite{Kohonen} shows how a discrete distribution on samples can be used to approximate a CDF}
-            \label{fig:placeholder}
+            \label{fig:placeholder1}
 \end{figure}
 \subsection{Continuous Ranked Probability Score (CRPS)}
 \begin{definition}[CRPS]
-    Let $\mathcal P$ be the set of Borel probability measures (measures defined on any open set) on $\mathbb R$. Then we define the Continuous Ranked Probability Score as \begin{align*}
-        \text{CRPS}=-\int_{-\infty}^\infty (F(y)-\mathbbm 1_{\{y\geq x\}})^2 dy
+    Let $\mathcal P$ be the set of Borel probability measures (measures defined on the Borel $\sigma$-algebra) on $\mathbb R$. Then we define the Continuous Ranked Probability Score as \begin{align*}
+        \text{CRPS}(F,x)=-\int_{-\infty}^\infty (F(y)-\mathbbm 1_{\{y\geq x\}})^2 dy
     \end{align*}
 \end{definition}
-Fig. 2.3 shows that the CRPS can be interpreted as a way of measuring the space between the predictive CDF and the and the point measure at the spot of the value that materialized 
+Fig. 2.3 shows that the CRPS can be interpreted as a way of measuring the area between the predictive CDF and the point measure at the materialized value.
 \begin{remark}
-The CRPS is proper with respect to $\mathcal P$ and strictly proper with respect to the class $\mathcal P_1$ of borel probability measures with finite first moments.
+The CRPS is proper with respect to $\mathcal P$ and strictly proper with respect to the class $\mathcal P_1$ of Borel probability measures with finite first moments.
 \end{remark}
 \begin{remark}
     The divergence function connected to the CRPS is defined by \begin{align*}
@@ -138,7 +141,7 @@ Another useful characteristic of the CRPS is the consideration of "distance" in 
     \centering
     \includegraphics[width=0.5\linewidth]{images/Figure_3.png}
     \caption{Visualization of the area used in the CRPS if the forecaster gives the CDF of a normal distribution with mean at $0$ and the materialized value is $3$}
-    \label{fig:placeholder}
+    \label{fig:placeholder2}
 \end{figure}
 \begin{remark}
     The CRPS can also be defined as \begin{align*}
@@ -147,11 +150,11 @@ Another useful characteristic of the CRPS is the consideration of "distance" in 
     where $X,X'$ are independent copies of a random variable with distribution $F$
 \end{remark}
 \subsection{Considering other scores}
-After focussing strongly on the CRPS it remains to be said that the CRPS has the downside, that the integral, which is needed to compute the score is not that easy to calculate. Therefore, as stated in \cite{Gneiting} one might have to resort to using numerical methods to calculate it. Possible other scores that can be considered instead of the CRPS can be the so called energy score, which is a generalization  of the CRPS on $\mathbb R^n$ or scores based only on first and second moments of distributions.
+After focusing strongly on the CRPS, it remains to be said that the CRPS has the downside that the integral needed to compute the score is not always easy to calculate. Therefore, as stated in \cite{Gneiting}, one might have to resort to numerical methods to compute it. Other scores that can be considered instead of the CRPS are the so-called energy score, which is a generalization of the CRPS to $\mathbb R^n$, or scores based only on the first and second moments of distributions.
 %\chapter{Preliminaries}
 %\section{Mathematical Background}
 \chapter{Kernel scores}
-In this chapter we look at the question of how can be possible to easily define scoring functions by using so called kernels and look at some examples of using those kernels to define some of the scores we already know. 
+In this chapter we look at the question of how scoring functions can be easily defined using so-called kernels, and we look at some examples of using those kernels to recover some of the scores we already know.
 \begin{definition}[negative definite kernel]
 Let $\Omega$ be a nonempty set and let $g$ be a real valued function on $\Omega\times\Omega$. If $g$ is symmetric, i.e., $g(x,y)=g(y,x)$ and \begin{align*}
     \sum_{i=1}^n\sum_{j=1}^n \alpha_i\alpha_j g(x_i,x_j)\leq 0
@@ -160,14 +163,14 @@ Let $\Omega$ be a nonempty set and let $g$ be a real valued function on $\Omega\
 \end{definition}
 Having defined what a kernel is, we now get the following theorem connecting negative definite kernels and scoring rules:
 \begin{theorem}
-Let $\Omega$ be a Hausdorff space and let $g\colon\Omega\times\Omega\to\mathbb R$ be a non-negative and continuous negative definite kernel. If now $P$ is a Borel probability measure on $\Omega$ and $X,X'$ are independend with distribution $P$ the expression \begin{align*}
-    S(P,x)=\frac 12 E_P(g(X,X'))- E_P[g(X,x)]
+Let $\Omega$ be a Hausdorff space and let $g\colon\Omega\times\Omega\to\mathbb R$ be a non-negative and continuous negative definite kernel. If now $P$ is a Borel probability measure on $\Omega$ and $X,X'$ are independent with distribution $P$, the expression \begin{align*}
+    S(P,x)=\frac 12 E_P[g(X,X')]- E_P[g(X,x)]
 \end{align*}
-is a proper scoring rule regarding the class of Borel probability measures on $\Omega$
+is a proper scoring rule with respect to the class of Borel probability measures on $\Omega$.
 \end{theorem}
 The proof of the Theorem is outlined in \cite{Gneiting}.
 \begin{example}
-    Take $g(x,x')=\lvert x-x'\rvert$ as a negative kernel. Using the theorem, we get the alternative definition of the CRPS
+    Take $g(x,x')=\lvert x-x'\rvert$ as a negative definite kernel. Using the theorem, we get the alternative definition of the CRPS.
 \end{example}
 \begin{example}
     Let $\Omega =\{0,1\}$ and let $g(0,0)=g(1,1)=0, g(1,0)=g(0,1)=1$. If we again use the theorem we get the Brier score as the resulting scoring function.
@@ -176,9 +179,9 @@ The proof of the Theorem is outlined in \cite{Gneiting}.
 It is also possible to consider complex valued kernels defined in a similar manner. By doing so, it is possible to define a generalized version of the theorem from before. By doing this and choosing a fitting complex kernel, we can get \begin{align*}
     -\int_{\mathbb R^m}\lvert \phi_P(y)-e^{i\langle x,y\rangle}\rvert^2\mu(dy).
 \end{align*}
-Under certain demands at $\mu$ this scoring rule is strictly proper relative to the class of borel probability measures on $\mathbb R^m$.
+Under certain conditions on $\mu$ this scoring rule is strictly proper relative to the class of Borel probability measures on $\mathbb R^m$.
 \chapter{Scoring rules for quantiles}
-In the previous chapters, we looked at scoring rules for given density or cumulative distribution function. In some cases, however, it might not be useful to look at a whole distribution and it might be enough to know where certain sections of the distribution lie. This motivates the following definition: 
+In the previous chapters, we looked at scoring rules for a given density or cumulative distribution function. In some cases, however, it might not be useful to look at a whole distribution and it might be enough to know where certain sections of the distribution lie. This motivates the following definition: 
 \begin{definition}[quantiles]
 For use in this chapter, we consider quantiles $r_1,\dots,r_k$ at the levels $\alpha_1,\dots,\alpha_k\in (0,1)$ to be values such that \begin{align*}
     P(x\leq r_k)=\alpha_k
@@ -195,27 +198,28 @@ for all real numbers $r_1,\dots,r_k$, if $q_1,\dots,q_k$ are the real quantiles 
     Let $s$ be a nondecreasing function and $h$ be arbitrary, then \begin{align*}
         S(r;x)=\alpha s(r)+(s(x)-s(r))\mathbbm 1_{\{x\leq r\}}+h(x)
     \end{align*} 
-    is proper for predicting a single quantile $\alpha\in(0,1)$
+    is proper for predicting a single quantile at level $\alpha\in(0,1)$.
 \end{theorem}
 \begin{proof}
     Assume $r<q$, then \begin{align*}
-        S(q;P)-S(r;P)\\&=\int \alpha s(q)+(s(x)-s(q))\mathbbm 1_{\{x\leq q\}}+h(x)-(\alpha s(r)+(s(x)-s(r))\mathbbm 1_{\{x\leq r\}}+h(x))dP(x)\\
-        &=\int\alpha s(r)-\alpha s(q)+(s(x)-s(q))\mathbbm 1_{\{x\leq q\}}-(s(x)-s(r))\mathbbm 1_{\{x\leq r\}} dP(x)
+        S(q;P)-S(r;P)&=\int \alpha s(q)+(s(x)-s(q))\mathbbm 1_{\{x\leq q\}}+h(x)-(\alpha s(r)+(s(x)-s(r))\mathbbm 1_{\{x\leq r\}}+h(x))\,dP(x)\\
+        &=\int\alpha s(q)-\alpha s(r)+(s(x)-s(q))\mathbbm 1_{\{x\leq q\}}-(s(x)-s(r))\mathbbm 1_{\{x\leq r\}}\, dP(x).
     \end{align*}
-    Dividing the integral into parts over the sets $(-\infty,r],(r,q),[q,\infty)$ gives that the ebove expression is equal to \begin{align*}
-        \int_{(r,q)}s(x) dP(x)+s(r)P(r)-\alpha s(r)&\leq\int_{(r,q)}s(r) dP(x)+s(r)P(r)-\alpha s(r)\\
-        &=s(r) P(q)-s(r)P(r)\\
+    Dividing the integral into parts over the sets $(-\infty,r],(r,q),[q,\infty)$ gives that the above expression is equal to \begin{align*}
+        \int_{(r,q)}s(x)\, dP(x)+s(r)P(r)-\alpha s(r)&\geq\int_{(r,q)}s(r)\, dP(x)+s(r)P(r)-\alpha s(r)\\
+        &=s(r)\bigl(P(q)-P(r)\bigr)+s(r)P(r)-\alpha s(r)\\
+        &=s(r)P(q)-\alpha s(r)\\
         &=0,
     \end{align*}
-    where the inequality holds because $r<q$ and because $s$ is nondecreasing. The first equality holds because $P$ is some kine of Borel measure.
-    For $r>q$ the result is the the same, concluding the proof.
+    where the inequality holds because $s$ is nondecreasing, so $s(x)\geq s(r)$ for all $x\in(r,q)$, and the last equality holds because $P(q)=\alpha$ by the definition of the quantile $q$. Hence $S(q;P)\geq S(r;P)$.
+    For $r>q$ the argument is analogous, concluding the proof.
 \end{proof}
 \section{Use cases of quantiles} 
 In financial mathematics, it might be reasonable trying to find the highest possible loss on an investment excluding the lowest 1\% of outcomes as unreasonable. This concept is connected to the so called Value at Risk which by different sources is considered to be the 1\% quantile of density on possible financial loss or the expected loss on an investment excluding the lowest 1\% of possible losses. The latter definition is visualized in Figure 4.1 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{images/VaR.png}
     \caption{Figure one of \cite{VaR} of the Value at Risk defined as some kind of expected value}
-    \label{fig:placeholder}
+    \label{fig:placeholder3}
 \end{figure}
 \chapter{Further application of scoring rules}
 In this chapter, we will briefly discuss the intention behind using scoring rules to compare forecasting models to each other. Consider $X=(X_1,\dots,X_n)$ to be the values supposed to be forecast by some forecasting model. The goal is to use scoring rules as a way of comparing different forecasting models, as stated in the beginning. Until now, we considered forecasts to be fully specified. We now change this assumption and consider the forecasting rules we are looking at to be specified up to a parameter $\theta$. Consider $H_k, k\in\{1,\dots,n\}$ to be one of $n$ forecasting models. Using the logarithmic score on the so called integrated likelihood we get: \begin{align*}
@@ -224,5 +228,5 @@ In this chapter, we will briefly discuss the intention behind using scoring rule
 Since we are now looking at likelihood, the probability a value receives from the model $H_k$ depends on the values $X^{t-1}$ that the model previously had to predict (we assume the values $X_1,\dots,X_n$ are in a particular order for this to work). From this point on, one could invent further scoring rules and ways to compare models, which we skipped in the presentation because it would require too much time.
 \nocite{Unger}
 \bibliographystyle{plain}
-\bibliography{References/refs}
+\bibliography{../References/refs}
 \end{document}

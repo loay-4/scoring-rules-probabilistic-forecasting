@@ -24,7 +24,7 @@
 %%% They are used in: beamerouterthemeTUBlayout.sty
 
 \title[Scoring Rules]{Scoring Rules for Probabilistic Forecasting}
-\author[Loay, Jonas]{Loay Hefni\inst{1}, Jonas Persé\inst{2}}
+\author[Loay, Jonas]{Loay Hefni\inst{1}, Jonas Persé\inst{1}}
 \institute[Mathematics]{\inst{1}Mathematics}
 \newcommand{\preslocation}{Seminar talk on Scoring Rules for Probabilistic Forecasting}
 \date{27. November 2025}
@@ -72,7 +72,7 @@
     \pause
     \begin{block}{Definition}
         A scoring rule is called (strictly) \textbf{proper}, if
-        $$S(Q, Q) \leq S(P, Q)$$
+        $$S(Q, Q) \geq S(P, Q)$$
         for all $P$.
     \end{block}
 \end{frame}
@@ -80,7 +80,7 @@
 
     \begin{exampleblock}{Linear Score}
         Define $$S(P, \omega) := \left | \omega - \mathrm{median}(P)\right|$$
-        Let $Q$ be Log-Normal. Fourier would rather predict $P\sim\mathcal{N}(23, \sigma^2)$. Then $S$ is improper $$S(P, Q) < S(Q, Q).$$
+        Let $Q$ be Log-Normal. Fourier would rather predict $P\sim\mathcal{N}(23, \sigma^2)$. Then $S$ is improper $$S(P, Q) > S(Q, Q).$$
     \end{exampleblock}
     \begin{figure}
         \centering
@@ -116,8 +116,8 @@
 \begin{frame}{Mathematical Characterization}
     \begin{block}{Definition}
         \begin{itemize}
-            \item A scoring rule is called \textbf{proper} if $$S(Q, Q) \leq S(P, Q) \hspace{2em}\forall P,Q\in\mathcal{P}.$$
-            \item A scoring rule is called \textbf{strictly proper} if $$S(Q, Q) < S(P, Q) \hspace{2em}\forall P,Q\in\mathcal{P}.$$
+            \item A scoring rule is called \textbf{proper} if $$S(Q, Q) \geq S(P, Q) \hspace{2em}\forall P,Q\in\mathcal{P}.$$
+            \item A scoring rule is called \textbf{strictly proper} if $$S(Q, Q) > S(P, Q) \hspace{2em}\forall P,Q\in\mathcal{P},\ P\neq Q.$$
             \item Proper rules encourage honesty.
         \end{itemize}
     \end{block}
@@ -165,7 +165,7 @@
         \end{itemize}
     \end{block}
     \begin{block}{Definition}
-        Let $G:\mathcal{P}\to\mathbb{R}$ be convex. For $p\in\mathcal{P}$ the \textbf{subdifferential} of $G$ at $p$ is defined as $$\partial G(p) := \left\{ v\in\Delta_n: G(q)\geq  G(p) + \langle v, q-p\rangle \text{ for all } q\in\Delta_n \right \}.$$ A $v\in\partial G(p)$ is called a \textbf{subgradient}.
+        Let $G:\mathcal{P}\to\mathbb{R}$ be convex. For $p\in\mathcal{P}$ the \textbf{subdifferential} of $G$ at $p$ is defined as $$\partial G(p) := \left\{ v\in\mathbb{R}^n: G(q)\geq  G(p) + \langle v, q-p\rangle \text{ for all } q\in\Delta_n \right \}.$$ A $v\in\partial G(p)$ is called a \textbf{subgradient}. Note: a subgradient is a vector in $\mathbb{R}^n$, not necessarily a probability vector.
     \end{block}
 \end{frame}
 \begin{frame}{Subdifferential}
@@ -271,7 +271,7 @@
     Setting of the Forecasts:
     \begin{itemize}
         \item $\mu$ be $\sigma$-finite on $(\Omega,\mathcal A)$
-        \item $\mathcal{L}_\alpha$ probability measures absolutely continuous to $\mu$, $\alpha>1$
+        \item $\mathcal{L}_\alpha$ probability measures absolutely continuous with respect to $\mu$, $\alpha>1$
         \item Each measure from $\mathcal L_\alpha$ has $\mu$-density $p$ with \begin{equation*}
             \lVert p\rVert_\alpha=\left(\int p(\omega)^\alpha\mu(d\omega)\right)^{\frac 1\alpha}<\infty
         \end{equation*}
@@ -310,7 +310,7 @@ Definition: \begin{equation*}
 \begin{itemize}
     \item Strictly proper relative to $\mathcal L_1$ of dominated measures
     \item Widely used under various names
-    \item Under certain conditions every proper scoring rule only depending on $p$ by the value $p(\omega)$ are equivalent
+    \item Under certain conditions, all proper scoring rules that depend on $p$ only through the value $p(\omega)$ are equivalent
 \end{itemize}
     
 \end{frame}
@@ -356,7 +356,7 @@ Setting (Regression task): \begin{itemize}
             \centering
             \includegraphics[width=0.5\linewidth]{images/Kohonen Suomela Fig.9.png}
             \caption*{Fig. 2: Figure 9 of \cite{Kohonen} about a way of representing a distribution function}
-            \label{fig:placeholder}
+            \label{fig:placeholder1}
         \end{figure}
         \item Considering "distance"
     \end{enumerate}
@@ -387,7 +387,7 @@ Setting (Regression task): \begin{itemize}
     \includegraphics[width=0.33\linewidth]{images/Figure_2.png}
     \includegraphics[width=0.33\linewidth]{images/Figure_3.png}
     \caption*{Fig. 4: Visualisation of the CRPS for predicted normal dist.}
-    \label{fig:placeholder}
+    \label{fig:placeholder2}
 \end{figure}
     
 \end{frame}
@@ -415,8 +415,8 @@ Setting (Regression task): \begin{itemize}
 
 \begin{frame}{Possible Downsides of the CRPS}
 \begin{itemize}
-    \item The calculation of the integral is not that easy to compute
-    \item One has probably has to use numerical methods like using quadrature formulas: \begin{equation*}
+    \item The integral is not always easy to compute
+    \item One probably has to use numerical methods such as quadrature formulas: \begin{equation*}
         S=\sum_i (x_{i-1}-x_i)\cdot\frac{(F(x_{i-1})-D(x_{i-1})^2+(F(x_{i})-D(x_i))^2}{2}
     \end{equation*}
 \end{itemize}
@@ -443,7 +443,7 @@ Setting (Regression task): \begin{itemize}
 \end{frame}
 
 \begin{frame}{Kernel Scores}
-\textbf{Theorem (Theorem 4 of \cite{Gneiting})}: Let $\Omega$ be a Hausdorff space (space where distinct points have disjoint neighborhoods around them) and let $g\colon\Omega\times\Omega\to\mathbb R$ be a non-negative, continuous and negative definite kernel. Also let $P$ be a Borel probability measure on $\Omega$. Let $X,X'$ be independent with distribution $P$. In this case the scoring rule \begin{equation*}
+\textbf{Theorem (Theorem 4 of \cite{Gneiting})}: Let $\Omega$ be a Hausdorff space (a space where distinct points have disjoint neighborhoods around them) and let $g\colon\Omega\times\Omega\to\mathbb R$ be a non-negative, continuous and negative definite kernel. Also let $P$ be a Borel probability measure on $\Omega$. Let $X,X'$ be independent with distribution $P$. In this case the scoring rule \begin{equation*}
     S(P,x)=\frac{1}{2}E_P[g(X,X')]-E_P[g(X,x)]
 \end{equation*}
 is proper regarding the class of Borel probability measures on $\Omega$
@@ -480,7 +480,7 @@ is proper regarding the class of Borel probability measures on $\Omega$
             \centering
             \includegraphics[width=1\linewidth]{images/Gneiting binary forecasts.png}
             \caption*{Fig. 5: Part of the Table in \cite{Gneiting} about Scores on binary forecasts} 
-            \label{fig:placeholder}
+            \label{fig:placeholder3}
         \end{figure}
 
 \end{frame}
@@ -504,8 +504,8 @@ We can allow complex-valued kernels $h$ as follows: \begin{itemize}
 \section{SR for quantiles}
 \begin{frame}{Scoring Rules for Quantiles}
 \begin{itemize}
-    \item Instead of predictive distributions we look at Section
-    \item The predictions now are the points at the edges of these Sections
+    \item Instead of predictive distributions we look at sections of the distribution
+    \item The predictions now are the points at the edges of these sections
 \end{itemize}
     
 \end{frame}
@@ -515,7 +515,7 @@ We can allow complex-valued kernels $h$ as follows: \begin{itemize}
     \centering
     \includegraphics[width=0.75\linewidth]{images/VaR.png}
     \caption*{Fig. 6:Figure 1 of \cite{VaR} for a intuition behind the VaR}
-    \label{fig:placeholder}
+    \label{fig:placeholder4}
 \end{figure}
     
 \end{frame}

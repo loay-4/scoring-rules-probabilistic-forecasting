@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import lognorm
 
-FIGURES_DIR = Path(__file__).parent / "figures"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = SCRIPT_DIR / "figures"
 
 # Target moments of the true distribution Q.
 TARGET_MEAN = 25

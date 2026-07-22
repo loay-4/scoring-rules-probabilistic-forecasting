@@ -36,14 +36,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-FIGURES_DIR = Path(__file__).parent / "figures"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = SCRIPT_DIR / "figures"
 
 # Validated colorblind-safe categorical palette (fixed assignment order).
 BLUE, ORANGE, AQUA, YELLOW = "#2a78d6", "#eb6834", "#1baf7a", "#eda100"
 INK, MUTED = "#0b0b0b", "#52514e"
 
+# These figures use matplotlib's mathtext (never external LaTeX), so they
+# render identically on machines with and without a TeX installation.
 plt.rcParams.update(
     {
+        "text.usetex": False,
         "font.family": "serif",
         "mathtext.fontset": "cm",
         "axes.spines.top": False,
@@ -68,6 +72,7 @@ def figure_properness(q: float = 0.7) -> None:
     exactly at p = q; the zero-one score only cares which side of 1/2 the
     report falls on, so any p on the correct side is equally good.
     """
+    _mathtext()
     p = np.linspace(0.001, 0.999, 1000)
 
     # S(p, Q) = E_Q[S(p, omega)] for each rule.
@@ -132,6 +137,7 @@ def figure_bregman(p_forecast: float = 0.25, q_truth: float = 0.7) -> None:
     and its tangent at the forecast p, evaluated at the truth q — and it
     equals KL(q || p).
     """
+    _mathtext()
     G = lambda p: p * np.log(p) + (1 - p) * np.log(1 - p)
     dG = lambda p: np.log(p) - np.log(1 - p)  # derivative of G
 
@@ -192,6 +198,7 @@ def figure_crps(mu: float = 0.0, sigma: float = 1.0, obs: float = 1.5) -> None:
     observation lands, for a sharp and a vague forecast — unlike the log
     score, the CRPS grows with the *distance* of the miss.
     """
+    _mathtext()
     y = np.linspace(-5, 6, 1000)
     F = norm.cdf(y, mu, sigma)
     step = (y >= obs).astype(float)
@@ -237,7 +244,7 @@ def figure_crps(mu: float = 0.0, sigma: float = 1.0, obs: float = 1.5) -> None:
 # Figure 4: Monte Carlo — the honest forecaster wins in expectation
 # ----------------------------------------------------------------------------
 
-def figure_honesty_experiment(n_draws: int = 50_000, seed: int = 0) -> None:
+def figure_honesty_experiment(n_draws: int = 50_000, seed: int = 42) -> None:
     """Empirical check of properness for continuous forecasts.
 
     Nature draws from N(0, 1). Forecasters all center correctly but report
@@ -245,6 +252,7 @@ def figure_honesty_experiment(n_draws: int = 50_000, seed: int = 0) -> None:
     draws shows both are maximized at the honest sigma = 1: neither
     overconfidence (sigma < 1) nor underconfidence (sigma > 1) pays.
     """
+    _mathtext()
     rng = np.random.default_rng(seed)
     x = rng.standard_normal(n_draws)  # observations from the true N(0, 1)
     sigmas = np.linspace(0.4, 2.5, 60)
@@ -280,6 +288,11 @@ def figure_honesty_experiment(n_draws: int = 50_000, seed: int = 0) -> None:
     )
     fig.tight_layout()
     _save(fig, "honesty_experiment.png")
+
+
+def _mathtext() -> None:
+    """Force mathtext rendering (other scripts may have enabled usetex)."""
+    plt.rcParams["text.usetex"] = False
 
 
 def _save(fig: plt.Figure, name: str) -> None:

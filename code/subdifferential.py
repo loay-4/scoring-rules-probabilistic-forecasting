@@ -15,9 +15,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-plt.rcParams["text.usetex"] = shutil.which("latex") is not None
-
-FIGURES_DIR = Path(__file__).parent / "figures"
+SCRIPT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = SCRIPT_DIR / "figures"
 
 
 def G(x: np.ndarray) -> np.ndarray:
@@ -26,6 +25,8 @@ def G(x: np.ndarray) -> np.ndarray:
 
 
 def main(save: bool = True) -> None:
+    # Render labels with real LaTeX when available, mathtext otherwise.
+    plt.rcParams["text.usetex"] = shutil.which("latex") is not None
     x = np.linspace(-3, 3, 400)
 
     # The kink where the subdifferential is a whole interval rather than a point.

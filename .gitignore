@@ -4,19 +4,29 @@
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
 .venv/
+venv/
+.env
+
+# Editors
+.vscode/
+.idea/
 
 # LaTeX build artifacts
 *.aux
-*.log
-*.out
-*.toc
-*.nav
-*.snm
-*.synctex.gz
 *.bbl
+*.bcf
 *.blg
 *.fdb_latexmk
 *.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
 *.idx
